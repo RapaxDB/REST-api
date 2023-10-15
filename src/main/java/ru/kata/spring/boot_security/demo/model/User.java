@@ -13,14 +13,15 @@ import java.util.*;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-    @Column
+    @Column(name = "username")
     private String username;
-    @Column
+    @Column(name = "lastName")
     private String lastName;
-    @Column
+    @Column(name = "email")
     private String email;
-    @Column
+    @Column(name = "password")
     private String password;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
