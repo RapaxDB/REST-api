@@ -4,6 +4,7 @@ package ru.kata.spring.boot_security.demo.model;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import java.util.*;
@@ -28,7 +29,6 @@ public class User implements UserDetails {
     joinColumns = @JoinColumn(name = "user_id"),
     inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
-
 
     public User(){
     }
@@ -59,6 +59,14 @@ public class User implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getRolesName() {
+        StringBuilder strRoles = new StringBuilder();
+        for (Role i : roles) {
+           strRoles.append(i.getName()).append("\n");
+        }
+        return strRoles.toString();
     }
 
     @Override
@@ -111,6 +119,15 @@ public class User implements UserDetails {
     }
 
     public void setPassword(String password) {
+        if (password.equals("password")) {
+            this.password = "";
+            return;
+        }
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        this.password = encoder.encode(password);
+    }
+
+    public void setOldPassword(String password) {
         this.password = password;
     }
 
@@ -121,4 +138,5 @@ public class User implements UserDetails {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
+
 }
