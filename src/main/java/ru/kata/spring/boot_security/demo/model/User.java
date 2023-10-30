@@ -119,8 +119,8 @@ public class User implements UserDetails {
     }
 
     public void setPassword(String password) {
-        if (password.equals("password")) {
-            this.password = "";
+        if (password.isEmpty()) {
+            this.password = password;
             return;
         }
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();

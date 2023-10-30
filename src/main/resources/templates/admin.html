@@ -151,10 +151,10 @@
                                                                 <p>
                                                                     <label for="editPassword">
                                                                         <strong>Password</strong>
-                                                                        <input class="form-control" th:type="text"
+                                                                        <input class="form-control" type="password"
                                                                                th:name="password" id="editPassword"
                                                                                placeholder="password"
-                                                                               th:value="password" required>
+                                                                               th:value="null">
                                                                     </label>
                                                                 </p>
                                                                 <label class="container-fluid col-6"
@@ -246,9 +246,9 @@
                                                                     <strong>Role</strong>
                                                                     <select id="deleteUserRoles" class="form-select"
                                                                             name="roles" multiple size="2" disabled>
-                                                                        <option th:each="role: ${user.roles}">
-                                                                            <th:block th:text="${role}">
-
+                                                                        <option th:each="role: ${user.roles}"
+                                                                                th:value="${role.getId()}">
+                                                                            <th:block th:text="${role.getName()}">
                                                                             </th:block>
                                                                         </option>
                                                                     </select>
