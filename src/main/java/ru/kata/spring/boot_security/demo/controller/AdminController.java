@@ -1,50 +1,48 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 
-import org.springframework.ui.Model;
-
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
-
 import java.security.Principal;
+import java.util.List;
+
 
 @Controller
-@RequestMapping
+@RequestMapping("/admin")
 public class AdminController {
+    @Autowired
     private UserService service;
     @Autowired
     public AdminController (UserService service) {
         this.service = service;
     }
 
-    @GetMapping("/admin")
-    public String getAdminPage(Model model, Principal principal) {
-        model.addAttribute("users", service.getUsers());
-        model.addAttribute("admin", service.findByUsername(principal.getName()));
-        model.addAttribute("newUser", new User());
-        model.addAttribute("rolesAdd", service.getRoles());
-        return "admin";
+    @GetMapping
+    public ResponseEntity<List<User>> getAdminPage() {
+        return ResponseEntity.ok(service.getUsers());
     }
 
-    @PostMapping("/admin")
-    public String createUser(@ModelAttribute("user") User user) {
+    @PostMapping("/newUser")
+    public ResponseEntity<HttpStatus> createUser(@RequestBody User user) {
         service.addUser(user);
-        return "redirect:/admin";
+        return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
-    @PostMapping("/admin/edit")
-    public String editUser(@ModelAttribute("user") User user) {
+    @PostMapping("/edit")
+    public ResponseEntity<HttpStatus> editUser(@RequestBody User user) {
         service.editUser(user);
-        return "redirect:/admin";
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PostMapping("/admin/delete")
-    public String removeUserById(Long id) {
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<HttpStatus> removeUserById(@PathVariable("id") Long id) {
         service.deleteUser(id);
-        return "redirect:/admin";
+        return ResponseEntity.ok(HttpStatus.OK);
     }
-
 }

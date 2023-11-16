@@ -22,16 +22,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http .csrf().disable().httpBasic().and()
                 .authorizeRequests()
-                .antMatchers("/", "/index").permitAll()
+                //.antMatchers("/", "/**").permitAll()
                 .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .antMatchers("/user").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
                 .formLogin().successHandler(successUserHandler)
                 .and()
                 .logout();
+
     }
     @Bean
     public PasswordEncoder passwordEncoder() {

@@ -8,10 +8,12 @@ import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -35,8 +37,12 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
     @Override
+    @Transactional(readOnly = true)
     public User getUserById(Long id) {
-        return userRepository.getById(id);
+        User user  = userRepository.getById(id);
+        System.out.println(user);
+        return user;
+
     }
 
     @Override

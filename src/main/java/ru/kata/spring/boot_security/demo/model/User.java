@@ -64,7 +64,7 @@ public class User implements UserDetails {
     public String getRolesName() {
         StringBuilder strRoles = new StringBuilder();
         for (Role i : roles) {
-           strRoles.append(i.getName()).append("\n");
+           strRoles.append(i.getName()).append(" ");
         }
         return strRoles.toString();
     }
