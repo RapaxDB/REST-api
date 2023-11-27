@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
 
 
-@Controller
-@RequestMapping("/user")
+@RestController
+@RequestMapping("rest_api/user")
 public class UserController {
     @GetMapping
     public ResponseEntity<User> profileUser() {

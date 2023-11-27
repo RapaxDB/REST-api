@@ -7,25 +7,40 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import java.security.Principal;
 import java.util.List;
 
 
-@Controller
-@RequestMapping("/admin")
+@RestController
+@CrossOrigin
+@RequestMapping("/rest_api/admin")
 public class AdminController {
-    @Autowired
+
     private UserService service;
+    private RoleRepository roleRepository;
     @Autowired
-    public AdminController (UserService service) {
+    public AdminController (UserService service, RoleRepository roleRepository) {
         this.service = service;
+        this.roleRepository = roleRepository;
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAdminPage() {
+    public ResponseEntity<List<User>> getUsers() {
         return ResponseEntity.ok(service.getUsers());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUser(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(service.getUserById(id));
+    }
+
+    @GetMapping("/roles")
+    public ResponseEntity<List<Role>> getRoles() {
+        return ResponseEntity.ok(roleRepository.findAll());
     }
 
     @PostMapping("/newUser")

@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUser(User user) {
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        userRepository.save(user);
+        userRepository.saveAndFlush(user);
     }
     @Override
     public void deleteUser(Long id) {
@@ -39,8 +39,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public User getUserById(Long id) {
-        User user  = userRepository.getById(id);
-        System.out.println(user);
+        User user  = userRepository.findById(id).get();
         return user;
 
     }
